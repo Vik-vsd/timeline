@@ -54,13 +54,13 @@ const TimeLineComponent = (props) => {
         largeNum = listToRender[num].eventIndex;
       }
     }
-    const eleArray = new Array(largeNum + 2);
+    const eleArray = new Array(largeNum + 3); // 1for extra ele, 1 for 1 indexed, 1 for as listto render will start from 0
     for (let num = 0; num < listToRender.length; num++) {
       const index = listToRender[num].eventIndex;
       eleArray[index] = 1;
     }
 
-    for (let num = 0; num < largeNum + 2; num++) {
+    for (let num = 1; num < largeNum + 3; num++) {
       if (eleArray[num] === undefined) {
         eleArray[num] = 1;
         return num;
@@ -104,7 +104,21 @@ const TimeLineComponent = (props) => {
     const position = dummArray.findIndex((x) => x.eventIndex === something);
     dummArray.splice(position, 1);
     optionNumber = -1;
-    props.changeList(dummArray);
+    if (dummArray.length === 1) {
+      const obj = {
+        eventName: "edit me",
+        eventTime: "",
+        eventDescription: "",
+        eventIndex: getUniqueId(),
+      };
+      const arr = [];
+      arr.push(obj);
+      console.log(arr, "arr");
+      props.changeList(arr);
+    } else {
+      props.changeList(dummArray);
+    }
+
     SetCurId("");
   };
   console.log(curId, "the curId");
@@ -175,7 +189,7 @@ const TimeLineComponent = (props) => {
                 );
               })}
 
-              {provided.placeholder}
+              <div style={{ visibility: "hidden" }}>{provided.placeholder}</div>
             </ul>
           )}
         </Droppable>

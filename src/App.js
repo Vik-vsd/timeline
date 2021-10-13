@@ -42,6 +42,7 @@ function App() {
   };
   const ChangedIndexListUpdate = (list) => {
     DUMMY_DATA = list;
+
     setArr(list);
     console.log(DUMMY_DATA);
   };

@@ -28,8 +28,11 @@ const Detail = (props) => {
     const newObj = { ...SelectedObject, eventName: nameVar };
     props.changeIt(newObj);
   };
+  const removeDefault = (e) => {
+    e.preventDefault();
+  };
   return (
-    <form>
+    <form onSubmit={removeDefault}>
       <label htmlFor="name">EventName</label>
       <input
         id="name"
