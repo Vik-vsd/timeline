@@ -1,0 +1,36 @@
+.Box {
+  height: 500px;
+  width: 200px;
+  background-color: aqua;
+
+  margin: 20vh auto;
+}
+
+li {
+  background-color: azure;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+.dragging {
+  background-color: yellow;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.side-option {
+  display: none;
+}
+.move-right {
+  float: right;
+  cursor: pointer;
+}
+.sameLine {
+  display: inline;
+  margin-left: 1rem;
+}
+
+.option-box {
+  margin-top: 1rem;
+  position: relative;
+  margin-left: 20px;
+}
