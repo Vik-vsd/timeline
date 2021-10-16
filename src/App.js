@@ -48,8 +48,7 @@ function App() {
   };
   console.log("rendering again");
   return (
-    <div className="App">
-      New One
+    <div>
       <TimeLineComponent
         list={DUMMY_DATA}
         changeData={changeTheData}

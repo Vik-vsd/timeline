@@ -1,11 +1,13 @@
 import react, { useEffect, useState } from "react";
 import Element from "./timeLineElement";
 import Detail from "./Details";
+import BD from "./backDrop";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 let optionNumber;
 const TimeLineComponent = (props) => {
   const [curId, SetCurId] = useState("");
   const [showOption, setShowOption] = useState(false);
+  const [reloading, setReloading] = useState(false);
   const listToRender = props.list;
 
   // const onlyIndexArray = props.list.map((x) => {
@@ -36,15 +38,19 @@ const TimeLineComponent = (props) => {
 
     //   updateCharacters(items);
   }
-
+  const onEnterHandler = () => {
+    console.log("ging to change list now");
+    setReloading(!reloading); // just to rerender
+  };
   const SaveData = (obj) => {
-    props.changeData(obj);
     for (let num = 0; num < listToRender.length; num++) {
+      // saving in local copy of lis also
       if (obj.eventIndex === listToRender[num].eventIndex) {
         listToRender[num] = obj;
         break;
       }
     }
+    props.changeData(obj);
   };
   const getUniqueId = () => {
     const numberOfElement = listToRender.length - 1;
@@ -104,7 +110,7 @@ const TimeLineComponent = (props) => {
     const position = dummArray.findIndex((x) => x.eventIndex === something);
     dummArray.splice(position, 1);
     optionNumber = -1;
-    if (dummArray.length === 1) {
+    if (dummArray.length === 0) {
       const obj = {
         eventName: "edit me",
         eventTime: "",
@@ -121,86 +127,95 @@ const TimeLineComponent = (props) => {
 
     SetCurId("");
   };
-  console.log(curId, "the curId");
+  const closeTheOption = () => {
+    if (showOption === true) {
+      setShowOption(false);
+    }
+  };
   return (
-    <div className="Box">
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId="characters">
-          {(provided) => (
-            <ul {...provided.droppableProps} ref={provided.innerRef}>
-              {listToRender.map((el, index) => {
-                return (
-                  <Draggable
-                    key={`${el.eventIndex}`}
-                    draggableId={`${el.eventIndex}`}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <li
-                        value={el.eventIndex}
-                        onClick={(event) => {
-                          SetCurId(event.target.value);
-                        }}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {el.eventName}
-                        <span
-                          className="move-right"
-                          onClick={() => {
-                            optionNumber = el.eventIndex;
-                            setShowOption(!showOption);
+    <BD show={true} closeTheOption={closeTheOption}>
+      <div className="Box ">
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="characters">
+            {(provided) => (
+              <ul {...provided.droppableProps} ref={provided.innerRef}>
+                {listToRender.map((el, index) => {
+                  return (
+                    <Draggable
+                      key={`${el.eventIndex}`}
+                      draggableId={`${el.eventIndex}`}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <li
+                          value={el.eventIndex}
+                          onClick={(event) => {
+                            SetCurId(event.target.value);
                           }}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
                         >
-                          pen
-                        </span>
-                        {showOption && optionNumber === el.eventIndex && (
-                          <ul className="option-box">
-                            <li
-                              onClick={() => {
-                                upHandler(el.eventIndex);
-                              }}
-                              className="sameLine"
-                            >
-                              Up
-                            </li>
-                            <li
-                              onClick={() => {
-                                downHandler(el.eventIndex);
-                              }}
-                              className="sameLine"
-                            >
-                              Top
-                            </li>
-                            <li
-                              onClick={() => {
-                                removeHandler(el.eventIndex);
-                              }}
-                              className="sameLine"
-                            >
-                              Remove
-                            </li>
-                          </ul>
-                        )}
-                      </li>
-                    )}
-                  </Draggable>
-                );
-              })}
+                          {el.eventName}
+                          <span
+                            className="move-right"
+                            onClick={() => {
+                              optionNumber = el.eventIndex;
+                              setShowOption(true);
+                            }}
+                          >
+                            pen
+                          </span>
+                          {showOption && optionNumber === el.eventIndex && (
+                            <ul className="option-box">
+                              <li
+                                onClick={() => {
+                                  upHandler(el.eventIndex);
+                                }}
+                                className="sameLine"
+                              >
+                                Up
+                              </li>
+                              <li
+                                onClick={() => {
+                                  downHandler(el.eventIndex);
+                                }}
+                                className="sameLine"
+                              >
+                                Top
+                              </li>
+                              <li
+                                onClick={() => {
+                                  removeHandler(el.eventIndex);
+                                }}
+                                className="sameLine"
+                              >
+                                Remove
+                              </li>
+                            </ul>
+                          )}
+                        </li>
+                      )}
+                    </Draggable>
+                  );
+                })}
 
-              <div style={{ visibility: "hidden" }}>{provided.placeholder}</div>
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <Detail
-        selectedItem={listToRender.find((x) => x.eventIndex === curId)}
-        changeIt={SaveData}
-      />
+                <div style={{ visibility: "hidden" }}>
+                  {provided.placeholder}
+                </div>
+              </ul>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <Detail
+          selectedItem={listToRender.find((x) => x.eventIndex === curId)}
+          changeIt={SaveData}
+          onEnter={onEnterHandler}
+        />
 
-      <button>Submit</button>
-    </div>
+        <button>Submit</button>
+      </div>
+    </BD>
   );
 };
 export default TimeLineComponent;
