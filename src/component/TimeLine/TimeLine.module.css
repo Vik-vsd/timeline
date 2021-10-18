@@ -1,0 +1,74 @@
+li {
+  background-color: azure;
+  margin-top: 1rem;
+  padding: 1rem;
+  list-style: none;
+}
+.dragging {
+  background-color: yellow;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.side-option {
+  display: none;
+}
+.move-right {
+  cursor: pointer;
+  margin-left: 4rem;
+}
+.sameLine {
+  display: inline;
+  margin-left: 1rem;
+}
+
+.option-box {
+  margin-top: 1rem;
+  position: absolute;
+  margin-left: 20px;
+}
+
+.BackDrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.error-modal {
+  position: fixed;
+  top: 30vh;
+  left: calc(50% - 15rem);
+  width: 30rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  z-index: 100;
+  border-radius: 7px;
+}
+/* /////////////////////////////////////////////////////////////////// */
+.boxContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.liEvent {
+  background-color: azure;
+  padding: 1rem;
+  list-style: none;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Box {
+  height: 300px;
+  width: auto;
+  /* background-color: aqua; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20vh auto;
+}
